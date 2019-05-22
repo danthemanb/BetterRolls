@@ -27,12 +27,11 @@ class BetterRoll(object):
 #    def format(self):
         #Format the object
 
-    def Roll(self, x, y):
+    def Roll(self, n, type):
             ''' Rolls n dice of size type.  For instance, 4d10.  Returns a list of results  '''
             res = [0] * n
             for i in range(n):
-                res[i] = randint(1, type)
-
+                res[i] = random.randint(1, type)
             return res
 
     def getFormattedDice(self):
@@ -42,22 +41,30 @@ class BetterRoll(object):
 class BetterGRoll(BetterRoll):
     def __init__(self):
         self.matches=[]
+        self.wiggle=0
         super().__init__()
 
     def rollDice(self, rollList):
         if(not rollList):
             return None
         for roll in rollList:
-            count = 0
-            print(f'Roll {count}: Num-{roll.num}, Type-{roll.type}, Size-{roll.size}')
-            count = count + 1
+            print(f'Num-{roll.num}, Type-{roll.type}, Size-{roll.size}')
+            if (roll.type=='d'):
+                res = super().Roll(roll.num, roll.size)
+                self.diceList.extend(res)
+            if (roll.type=='h'):
+                for i in range(roll.num):
+                    self.diceList.append(roll.size)
+            if (roll.type=='w'):
+                self.wiggle = self.wiggle + roll.num
+
+        #Format()
+
 
     def parse(self, rawList):
         rollList = []
         for raw in rawList:
             roll = SingleGRoll()
-            print(raw)
-            print()
             res = re.match(r'^((?P<num>\d+)?(?P<type>[dw])(10)?|(?P<hnum>\d+)?(?P<htype>h)(?P<hsize>\d+)?)$', raw, re.I)
             if res:
                 if res.group("type"):

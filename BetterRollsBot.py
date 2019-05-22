@@ -26,11 +26,14 @@ async def roll(ctx, *argv):
     #for arg in argv:
         #await ctx.send(f'Arg is {arg}.')
     dice = BetterRollsClass.BetterGRoll()
+    print(argv)
     for arg in argv:
+        print(arg)
         rolls = dice.parse(argv)
         if(not rolls):
             await ctx.send("Invalid Format! Usage -- ")
             return None
         dice.rollDice(rolls)
+        await ctx.send(f'You Rolled {dice.diceList} and have {dice.wiggle} wiggle dice!')
 
 client.run(TOKEN)
