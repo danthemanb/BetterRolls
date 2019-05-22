@@ -62,10 +62,11 @@ class BetterGRoll(BetterRoll):
 
 
     def parse(self, rawList):
+        expression = r'^((?P<num>\d+)?(?P<type>[dw])(10)?|(?P<hnum>\d+)?(?P<htype>h)(?P<hsize>\d+)?)$'
         rollList = []
         for raw in rawList:
             roll = SingleGRoll()
-            res = re.match(r'^((?P<num>\d+)?(?P<type>[dw])(10)?|(?P<hnum>\d+)?(?P<htype>h)(?P<hsize>\d+)?)$', raw, re.I)
+            res = re.match(expression, raw, re.I)
             if res:
                 if res.group("type"):
                     roll.type=res.group("type")
