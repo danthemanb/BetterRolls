@@ -1,11 +1,14 @@
 import random
 import re
+from collections import namedtuple
 
 class SingleGRoll(object):
     def __init__(self):
         self.num=1
         self.type='d'
         self.size=10
+
+GResult = namedtuple('GResult', ['width','height'])
 
 class BetterRoll(object):
     # Keeps track of an entire command given to the bot
@@ -41,8 +44,15 @@ class BetterRoll(object):
 class BetterGRoll(BetterRoll):
     def __init__(self):
         self.matches=[]
+        self.formattedMatches=""
         self.wiggle=0
         super().__init__()
+
+    def Calc(self, rollList):
+        self.rollDice(rollList)
+        matches = self.findMatches()
+        output = self.format(matches)
+        return output
 
     def rollDice(self, rollList):
         if(not rollList):
@@ -57,9 +67,6 @@ class BetterGRoll(BetterRoll):
                     self.diceList.append(roll.size)
             if (roll.type=='w'):
                 self.wiggle = self.wiggle + roll.num
-
-        #Format()
-
 
     def parse(self, rawList):
         expression = r'^((?P<num>\d+)?(?P<type>[dw])(10)?|(?P<hnum>\d+)?(?P<htype>h)(?P<hsize>\d+)?)$'
@@ -87,5 +94,37 @@ class BetterGRoll(BetterRoll):
             rollList.append(roll)
         return rollList
 
-#    def format(self):
+    def format(self, matchList):
+        self.sum = sum(self.diceList)
+        for match in matchList:
+            self.formattedMatches+f'{match.width}x{match.height} '
+        for die in self.diceList:
+            self.formattedDice+f'[ {die} ] '
+        output=f'You rolled: {self.formattedDice} \nAnd have Matches: {self.formattedMatches} \nAnd {self.wiggle} wiggle dice!'
+        return output
+
+
+    def findMatches(self):
         # Format the godlike object
+        tempList = self.diceList
+        tempList.sort()
+        resList=[]
+        width=0
+        old = -1
+        for find in tempList:
+            if(width > 0):
+                if (find==old):
+                    width += 1
+                else:
+                    cur = GResult(width, height)
+                    resList.append(cur)
+                    width=0
+                    old=find
+            else:
+                if (find==old):
+                    height = find
+                    width += 1
+                else:
+                    old=find
+        self.matches=resList
+        return resList

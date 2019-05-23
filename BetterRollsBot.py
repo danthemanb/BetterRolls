@@ -28,7 +28,8 @@ async def roll(ctx, *argv):
     if(not rolls):
         await ctx.send("Invalid Format! Usage -- ")
         return None
-    dice.rollDice(rolls)
-    await ctx.send(f'You Rolled {dice.diceList} and have {dice.wiggle} wiggle dice!')
+    out = dice.Calc(rolls)
+    #await ctx.send(f'You Rolled {dice.diceList} and have {dice.wiggle} wiggle dice!')
+    await ctx.send(out)
 
 client.run(TOKEN)
