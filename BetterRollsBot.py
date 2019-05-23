@@ -1,5 +1,6 @@
 import discord
 import os
+import sys
 import errno
 from discord.ext import commands
 import BetterRollsClass
@@ -31,5 +32,10 @@ async def roll(ctx, *argv):
     out = dice.Calc(rolls)
     #await ctx.send(f'You Rolled {dice.diceList} and have {dice.wiggle} wiggle dice!')
     await ctx.send(out)
+
+@client.command(aliases=['exit'])      #could make a command hidden, could give an alias
+async def quit(ctx):        #ctx stands for context and is sent in automatically
+    await ctx.send("Goodbye")
+    sys.exit(0)
 
 client.run(TOKEN)

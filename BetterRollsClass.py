@@ -51,7 +51,9 @@ class BetterGRoll(BetterRoll):
     def Calc(self, rollList):
         self.rollDice(rollList)
         matches = self.findMatches()
+        print(f'matches is {matches}')
         output = self.format(matches)
+        print(f'output is {output}')
         return output
 
     def rollDice(self, rollList):
@@ -96,27 +98,34 @@ class BetterGRoll(BetterRoll):
 
     def format(self, matchList):
         self.sum = sum(self.diceList)
-        for match in matchList:
-            self.formattedMatches+f'{match.width}x{match.height} '
+        if matchList:
+            self.formattedMatches += "And have Matches: "
+            for match in matchList:
+                self.formattedMatches += f'{match.width}x{match.height}, '
+        else:
+            self.formattedMatches += "And have no Matches"
         for die in self.diceList:
-            self.formattedDice+f'[ {die} ] '
-        output=f'You rolled: {self.formattedDice} \nAnd have Matches: {self.formattedMatches} \nAnd {self.wiggle} wiggle dice!'
+            self.formattedDice += f'[ {die} ] '
+        output=f'You rolled: {self.formattedDice} \n{self.formattedMatches}'
+        if(self.wiggle > 0):
+            output += f'\nAnd {self.wiggle} wiggle dice!'
         return output
 
 
     def findMatches(self):
         # Format the godlike object
-        tempList = self.diceList
+        tempList = self.diceList.copy()
         tempList.sort()
         resList=[]
         width=0
         old = -1
+        print(f'tempList is {tempList}')
         for find in tempList:
             if(width > 0):
                 if (find==old):
                     width += 1
                 else:
-                    cur = GResult(width, height)
+                    cur = GResult(width+1, height)
                     resList.append(cur)
                     width=0
                     old=find
@@ -126,5 +135,9 @@ class BetterGRoll(BetterRoll):
                     width += 1
                 else:
                     old=find
+        if(width > 0):
+            cur = GResult(width+1, height)
+            resList.append(cur)
         self.matches=resList
+        print(f'resList is {resList}')
         return resList
