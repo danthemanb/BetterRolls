@@ -98,9 +98,9 @@ class BetterGRoll(BetterRoll):
     def format(self, matchList):
         self.sum = sum(self.diceList)
         if matchList:
-            self.formattedMatches += "And have Matches: "
-            for match in matchList:
-                self.formattedMatches += f'{match.width}x{match.height}, '
+            self.formattedMatches += f'And have Matches: {matchList[0].width}x{matchList[0].height}'
+            for i in range(1, len(matchList)):
+                self.formattedMatches += f', {matchList[i].width}x{matchList[i].height}'
         else:
             self.formattedMatches += "And have no Matches"
         for die in self.diceList:
@@ -113,8 +113,8 @@ class BetterGRoll(BetterRoll):
 
     def findMatches(self):
         # Format the godlike object
-        # tempList = self.diceList.copy()
-        tempList = self.diceList
+        # tempList = self.diceList.copy()    # Uncomment this to have random order roll display
+        tempList = self.diceList            # Uncomment this to have sorted order roll display
         tempList.sort()
         resList=[]
         width=0
