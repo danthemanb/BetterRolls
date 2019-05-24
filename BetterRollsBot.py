@@ -27,7 +27,7 @@ async def roll(ctx, *argv):
     dice = BetterRollsClass.BetterGRoll()
     rolls = dice.parse(argv)
     if(not rolls):
-        await ctx.send("Invalid Format! Usage -- ")
+        await ctx.send("Invalid Format! Usage -- r[oll] dice [dice...]\nDice can be formatted as normal(d), hard(h), or wiggle(w) in the format of {Quantity}d{Size}")
         return None
     out = dice.Calc(rolls)
     #await ctx.send(f'You Rolled {dice.diceList} and have {dice.wiggle} wiggle dice!')
