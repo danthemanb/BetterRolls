@@ -32,6 +32,12 @@ async def roll(ctx, *argv):
     #await ctx.send(f'You Rolled {dice.diceList} and have {dice.wiggle} wiggle dice!')
     await ctx.send(out)
 
+@client.command(aliases=['makemacro', 'MAKEMACRO', 'MakeMacro', 'mm', 'MM'])      #could make a command hidden, could give an alias
+async def makeMacro(ctx, *argv):        #ctx stands for context and is sent in automatically
+    usrhash = hash(ctx.message.author)
+    status = create(usrhash, *argv)
+
+
 @client.command(aliases=['exit'])      #could make a command hidden, could give an alias
 async def quit(ctx):        #ctx stands for context and is sent in automatically
     await ctx.send("Goodbye")
