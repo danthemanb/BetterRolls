@@ -3,8 +3,7 @@ import os
 import sys
 import errno
 from discord.ext import commands
-import BetterRollsClass
-
+from BetterRolls import GodlikeRoll
 
 TOKEN = 'NTc1NTExODA4MTk1MDM1MTM2.XOHzmQ.4j0mPP3AYqpO1932s_dfo4R5NLk'
 
@@ -24,7 +23,7 @@ async def ping(ctx):        #ctx stands for context and is sent in automatically
 
 @client.command(aliases=['r', 'R', 'Roll', 'ROLL'])
 async def roll(ctx, *argv):
-    dice = BetterRollsClass.BetterGRoll()
+    dice = GodlikeRoll.BetterGRoll()
     rolls = dice.parse(argv)
     if(not rolls):
         await ctx.send("Invalid Format! Usage -- r[oll] dice [dice...]\nDice can be formatted as normal(d), hard(h), or wiggle(w) in the format of {Quantity}d{Size}\nFor Normal and Wiggle dice, Size must equal 10 or be left empty.")
@@ -38,4 +37,9 @@ async def quit(ctx):        #ctx stands for context and is sent in automatically
     await ctx.send("Goodbye")
     sys.exit(0)
 
+'''
+@client.command()      #could make a command hidden, could give an alias
+async def help(ctx):        #ctx stands for context and is sent in automatically
+    await ctx.send("Current Commands listing: ping, roll, exit")
+'''
 client.run(TOKEN)
