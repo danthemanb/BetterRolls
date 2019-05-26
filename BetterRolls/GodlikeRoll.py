@@ -1,5 +1,6 @@
 import random
 import re
+import discord
 from collections import namedtuple
 
 class SingleGRoll(object):
@@ -47,11 +48,11 @@ class BetterGRoll(BetterRoll):
         self.wiggle=0
         super().__init__()
 
-    def Calc(self, rollList):
+    def Calc(self, rollList, usr):
         self.rollDice(rollList)
         matches = self.findMatches()
         print(f'matches is {matches}')
-        output = self.format(matches)
+        output = self.format(matches, usr)
         print(f'output is {output}')
         return output
 
@@ -95,17 +96,17 @@ class BetterGRoll(BetterRoll):
             rollList.append(roll)
         return rollList
 
-    def format(self, matchList):
+    def format(self, matchList, usr):
         self.sum = sum(self.diceList)
         if matchList:
-            self.formattedMatches += f'And have Matches: {matchList[0].width}x{matchList[0].height}'
+            self.formattedMatches += f'And has Matches: {matchList[0].width}x{matchList[0].height}'
             for i in range(1, len(matchList)):
                 self.formattedMatches += f', {matchList[i].width}x{matchList[i].height}'
         else:
-            self.formattedMatches += "And have no Matches"
+            self.formattedMatches += "And has no Matches"
         for die in self.diceList:
             self.formattedDice += f'[ {die} ] '
-        output=f'You rolled: {self.formattedDice} \n{self.formattedMatches}'
+        output=f'<@{usr.id}> rolled: {self.formattedDice} \n{self.formattedMatches}'
         if(self.wiggle > 0):
             output += f'\nAnd {self.wiggle} wiggle dice!'
         return output
